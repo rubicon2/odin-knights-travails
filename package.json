@@ -1,0 +1,32 @@
+{
+    "name": "odin-knights-travails",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "webpack-dev-server --open --config webpack.dev.js",
+        "build": "webpack --config webpack.prod.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rubicon2/odin-knights-travails.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/rubicon2/odin-knights-travails/issues"
+    },
+    "homepage": "https://github.com/rubicon2/odin-knights-travails#readme",
+    "devDependencies": {
+        "css-loader": "^6.8.1",
+        "eslint": "^8.43.0",
+        "eslint-config-prettier": "^8.8.0",
+        "html-webpack-plugin": "^5.5.3",
+        "prettier": "2.8.8",
+        "style-loader": "^3.3.3",
+        "webpack": "^5.88.1",
+        "webpack-cli": "^5.1.4",
+        "webpack-dev-server": "^4.15.1",
+        "webpack-merge": "^5.9.0"
+    }
+}
