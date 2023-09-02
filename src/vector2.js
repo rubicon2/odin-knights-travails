@@ -4,6 +4,10 @@ export default class Vector2 {
         this.y = y;
     }
 
+    static zero = new Vector2(0, 0);
+
+    static one = new Vector2(1, 1);
+
     static add(a, b) {
         return new Vector2(a.x + b.x, a.y + b.y);
     }
