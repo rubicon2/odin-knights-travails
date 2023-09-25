@@ -28,13 +28,24 @@ export class Graph {
     }
 
     getEdge(nodeA, nodeB) {
-        return this.edges
-            .get(nodeA)
-            .filter((edge) => Node.isEquivalent(edge.neighbor, nodeB));
+        return (
+            this.edges
+                .get(nodeA)
+                .filter((edge) => Node.isEquivalent(edge.neighbor, nodeB))[0] ||
+            null
+        );
     }
 
     getEdges(node) {
         return this.edges.get(node) || null;
+    }
+
+    getNeighbor(nodeA, nodeB) {
+        return this.getEdge(nodeA, nodeB).neighbor;
+    }
+
+    getNeighbors(node) {
+        return this.getEdges(node).map((edge) => edge.neighbor);
     }
 
     findNode(data) {
