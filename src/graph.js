@@ -27,6 +27,12 @@ export class Graph {
             this.addUndirectedEdge(nodeA, neighbor, weight);
     }
 
+    getEdge(nodeA, nodeB) {
+        return this.edges
+            .get(nodeA)
+            .filter((edge) => Node.isEquivalent(edge.neighbor, nodeB));
+    }
+
     getEdges(node) {
         return this.edges.get(node) || null;
     }
