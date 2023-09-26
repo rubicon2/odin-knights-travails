@@ -94,7 +94,10 @@ export class Graph {
 
         while (openSet.length > 0) {
             // Move lower fCost pathNodes to the end so they can be popped off the end of the array instead of shifted off the front
-            openSet = MergeSort(openSet, (a, b) => a.fCost > b.fCost);
+            openSet = MergeSort(
+                openSet,
+                (a, b) => fScore.get(a) || 0 > fScore.get(b) || 0
+            );
 
             let currentGraphNode = openSet.pop();
             if (currentGraphNode === endNode)
