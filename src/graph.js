@@ -1,3 +1,5 @@
+import { MergeSort } from './sort';
+
 export class Graph {
     constructor(nodes) {
         this.nodes = nodes;
@@ -55,6 +57,68 @@ export class Graph {
             }
         }
         // No node found
+        return null;
+    }
+
+    #reconstructPath(cameFrom, current) {
+        let pathFromDestination = [current];
+        console.log(pathFromDestination);
+        // Why does this loop enough to add null onto the end??
+        while (
+            cameFrom.has(pathFromDestination[pathFromDestination.length - 1])
+        ) {
+            pathFromDestination.push(
+                cameFrom.get(
+                    pathFromDestination[pathFromDestination.length - 1]
+                )
+            );
+        }
+        return pathFromDestination.reverse();
+    }
+
+    findPath(startNode, endNode, estimateCostFn) {
+        // A* algorithm
+        let openSet = [startNode];
+
+        // Will use current node to find previous node in sequence
+        let cameFrom = new Map();
+        cameFrom.set(startNode, null);
+
+        // Cost of path from start to current node
+        let gScore = new Map();
+        gScore.set(startNode, 0);
+
+        // Estimate of cheapest path from start to end nodes
+        let fScore = new Map();
+        fScore.set(startNode, estimateCostFn(startNode, endNode));
+
+        while (openSet.length > 0) {
+            // Move lower fCost pathNodes to the end so they can be popped off the end of the array instead of shifted off the front
+            openSet = MergeSort(openSet, (a, b) => a.fCost > b.fCost);
+
+            let currentGraphNode = openSet.pop();
+            if (currentGraphNode === endNode)
+                return this.#reconstructPath(cameFrom, currentGraphNode);
+
+            for (let neighbor of this.getNeighbors(currentGraphNode)) {
+                let tentativeG =
+                    gScore.get(currentGraphNode) +
+                    this.getEdge(currentGraphNode, neighbor).weight;
+                if (
+                    !gScore.has(neighbor) ||
+                    tentativeG < gScore.get(neighbor)
+                ) {
+                    cameFrom.set(neighbor, currentGraphNode);
+                    gScore.set(neighbor, tentativeG);
+                    fScore.set(
+                        neighbor,
+                        tentativeG + estimateCostFn(neighbor, endNode)
+                    );
+                    if (!openSet.includes(neighbor)) openSet.push(neighbor);
+                }
+            }
+        }
+        // No path found, openSet is empty
         return null;
     }
 }
