@@ -22,6 +22,24 @@ export default class Knight {
         );
     }
 
+    static moves(startPos, endPos) {
+        let nodes = Knight.moveMap.findPath(
+            Knight.moveMap.findNode({ x: startPos[0], y: startPos[1] }),
+            Knight.moveMap.findNode({ x: endPos[0], y: endPos[1] }),
+            (a, b) =>
+                Vector2.sub(
+                    new Vector2(b.data.x, b.data.y),
+                    new Vector2(a.data.x, a.data.y)
+                ).magnitude()
+        );
+
+        let pathStr = `[`;
+        for (let node of nodes) {
+            pathStr += `[${node.data.x}, ${node.data.y}],`;
+        }
+        return pathStr.slice(0, pathStr.length - 2) + `]`;
+    }
+
     static #initMoveMap() {
         // moveMap contains all possible positions and the links between them
         const minPosition = 0;
