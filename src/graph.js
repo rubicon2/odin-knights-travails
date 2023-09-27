@@ -74,7 +74,10 @@ export class Graph {
         return pathFromDestination.reverse();
     }
 
-    findPath(startNode, endNode, estimateCostFn) {
+    findPath(startData, endData, estimateCostFn) {
+        let startNode = this.findNode(startData);
+        let endNode = this.findNode(endData);
+
         // A* algorithm
         let openSet = [startNode];
 

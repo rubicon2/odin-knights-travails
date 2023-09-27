@@ -4,12 +4,9 @@ import Vector2 from './vector2';
 
 let knightA = new Knight(0, 0);
 
-let node = Knight.moveMap.findNode({ x: 0, y: 0 });
-let targetNode = Knight.moveMap.findNode({ x: 7, y: 2 });
-
 // Returns moves as an array of nodes
 console.log(
-    Knight.moveMap.findPath(node, targetNode, (a, b) =>
+    Knight.moveMap.findPath({ x: 0, y: 0 }, { x: 7, y: 2 }, (a, b) =>
         Vector2.sub(
             new Vector2(b.data.x, b.data.y),
             new Vector2(a.data.x, a.data.y)

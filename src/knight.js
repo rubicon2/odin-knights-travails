@@ -24,8 +24,8 @@ export default class Knight {
 
     static moves(startPos, endPos) {
         let nodes = Knight.moveMap.findPath(
-            Knight.moveMap.findNode({ x: startPos[0], y: startPos[1] }),
-            Knight.moveMap.findNode({ x: endPos[0], y: endPos[1] }),
+            { x: startPos[0], y: startPos[1] },
+            { x: endPos[0], y: endPos[1] },
             (a, b) =>
                 Vector2.sub(
                     new Vector2(b.data.x, b.data.y),
