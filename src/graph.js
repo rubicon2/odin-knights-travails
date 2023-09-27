@@ -78,6 +78,9 @@ export class Graph {
         let startNode = this.findNode(startData);
         let endNode = this.findNode(endData);
 
+        // If there is no node for the start or end positions, no path can exist
+        if (!startNode || !endNode) return null;
+
         // A* algorithm
         let openSet = [startNode];
 
