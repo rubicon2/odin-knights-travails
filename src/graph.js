@@ -62,8 +62,6 @@ export class Graph {
 
     #reconstructPath(cameFrom, current) {
         let pathFromDestination = [current];
-        console.log(pathFromDestination);
-        // Why does this loop enough to add null onto the end??
         while (
             cameFrom.has(pathFromDestination[pathFromDestination.length - 1])
         ) {
@@ -82,7 +80,6 @@ export class Graph {
 
         // Will use current node to find previous node in sequence
         let cameFrom = new Map();
-        cameFrom.set(startNode, null);
 
         // Cost of path from start to current node
         let gScore = new Map();
