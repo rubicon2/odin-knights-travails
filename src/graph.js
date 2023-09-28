@@ -75,16 +75,18 @@ export class Graph {
     }
 
     findPath(startData, endData, estimateCostFn) {
+        // A* algorithm
+        // https://en.wikipedia.org/wiki/A*_search_algorithm
+
         let startNode = this.findNode(startData);
         let endNode = this.findNode(endData);
 
         // If there is no node for the start or end positions, no path can exist
         if (!startNode || !endNode) return null;
 
-        // A* algorithm
         let openSet = [startNode];
 
-        // Will use current node to find previous node in sequence
+        // Will use current node as key to store and find previous node in sequence
         let cameFrom = new Map();
 
         // Cost of path from start to current node
@@ -99,17 +101,21 @@ export class Graph {
             // Move lower fCost pathNodes to the end so they can be popped off the end of the array instead of shifted off the front
             openSet = MergeSort(
                 openSet,
-                (a, b) => fScore.get(a) || 0 > fScore.get(b) || 0
+                (a, b) => (fScore.get(a) || 0) > (fScore.get(b) || 0)
             );
 
             let currentGraphNode = openSet.pop();
+
             if (currentGraphNode === endNode)
                 return this.#reconstructPath(cameFrom, currentGraphNode);
 
             for (let neighbor of this.getNeighbors(currentGraphNode)) {
+                // Calculate cost to get to neighbor from startNode, via currentNode's path
                 let tentativeG =
                     gScore.get(currentGraphNode) +
                     this.getEdge(currentGraphNode, neighbor).weight;
+
+                // If better than any recorded path, update records in maps
                 if (
                     !gScore.has(neighbor) ||
                     tentativeG < gScore.get(neighbor)
@@ -120,11 +126,12 @@ export class Graph {
                         neighbor,
                         tentativeG + estimateCostFn(neighbor, endNode)
                     );
+
                     if (!openSet.includes(neighbor)) openSet.push(neighbor);
                 }
             }
         }
-        // No path found, openSet is empty
+        // No path found and openSet is empty
         return null;
     }
 }
