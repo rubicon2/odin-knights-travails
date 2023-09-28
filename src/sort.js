@@ -1,8 +1,8 @@
 export function MergeSort(arr, comparatorFn = null) {
     if (arr.length === 1) return arr;
 
-    let left = MergeSort(arr.slice(0, arr.length / 2));
-    let right = MergeSort(arr.slice(arr.length / 2));
+    let left = MergeSort(arr.slice(0, arr.length / 2), comparatorFn);
+    let right = MergeSort(arr.slice(arr.length / 2), comparatorFn);
 
     let sorted = [];
 
