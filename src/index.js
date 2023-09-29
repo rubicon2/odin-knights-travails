@@ -13,4 +13,13 @@ console.log(
 );
 
 // Returns moves as a string as per Odin project assignment
-console.log(Knight.moves([0, 0], [7, 7]));
+console.log(Knight.moves([0, 7], [7, 7]));
+console.log(Knight.moves([7, 7], [0, 0]));
+console.log(Knight.moves([0, 7], [7, 0]));
+console.log(Knight.moves([7, 0], [0, 7]));
+
+console.log(Knight.moves([0, 0], [0, 0]));
+console.log(Knight.moves([7, 7], [7, 7]));
+
+console.log(Knight.moves([3, 3], [0, 0]));
+console.log(Knight.moves([0, 0], [3, 3]));
