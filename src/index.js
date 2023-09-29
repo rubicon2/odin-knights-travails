@@ -1,6 +1,9 @@
 import './style.css';
 import Knight from './knight';
 import Vector2 from './vector2';
+import * as Dom from './dom';
+
+Dom.createPage(document.querySelector('body'));
 
 // Returns moves as an array of nodes
 console.log(

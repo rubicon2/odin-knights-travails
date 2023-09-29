@@ -1,0 +1,52 @@
+/* || Reset */
+:root {
+    box-sizing: border-box;
+    font-size: 1rem;
+
+    --brown: rgb(128, 94, 83);
+    --white: rgb(241, 241, 241);
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+/* || Basic element styles */
+body {
+    min-height: 100vh;
+
+    display: grid;
+    place-items: center;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+/* Chessboard */
+.chessboard {
+    height: 800px;
+    width: 800px;
+
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+
+    background-color: aquamarine;
+
+    border: 10px solid var(--brown);
+
+}
+
+.board-cell {
+}
+
+.black-cell {
+    background-color: var(--brown);
+}
+
+.white-cell {
+    background-color: var(--white);
+}
