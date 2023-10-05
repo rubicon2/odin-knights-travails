@@ -1,7 +1,7 @@
 export default class Vector2 {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
+        this.x = Number(x);
+        this.y = Number(y);
     }
 
     static zero = new Vector2(0, 0);
