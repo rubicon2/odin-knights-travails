@@ -13,13 +13,7 @@ export default class Knight {
         allMoves.push(new Vector2(x + 1, y - 2));
         allMoves.push(new Vector2(x - 2, y - 1));
         allMoves.push(new Vector2(x - 1, y - 2));
-        return allMoves.filter(
-            (move) =>
-                move.x >= Board.MIN_POSITION &&
-                move.x <= Board.MAX_POSITION &&
-                move.y >= Board.MIN_POSITION &&
-                move.y <= Board.MAX_POSITION
-        );
+        return allMoves.filter((move) => Board.isPositionValid(move));
     }
 
     static moves(startPos, endPos) {
