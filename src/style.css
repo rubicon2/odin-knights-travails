@@ -41,6 +41,8 @@ ul, ol {
 }
 
 .board-cell {
+    display: grid;
+    place-content: center;
 }
 
 .black-cell {
@@ -49,4 +51,14 @@ ul, ol {
 
 .white-cell {
     background-color: var(--white);
+}
+
+.start-cell {
+    color: white;
+    background-color: rgb(228, 93, 52);
+}
+
+.end-cell {
+    color: white;
+    background-color: rgb(48, 175, 48);
 }
