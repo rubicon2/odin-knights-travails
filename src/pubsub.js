@@ -14,10 +14,10 @@ function unsubscribe(tag, functionToRemove) {
     }
 }
 
-function publish(tag, data) {
+function publish(tag, ...data) {
     if (events[tag]) {
         events[tag].forEach((currentFunction) => {
-            currentFunction(data);
+            currentFunction(...data);
         });
     }
 }
