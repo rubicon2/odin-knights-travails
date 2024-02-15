@@ -13,6 +13,7 @@ let startPos = null;
 let endPos = null;
 
 let knightElement = null;
+let isMoving = false;
 
 export function createPage(parent) {
     createChessBoard(parent);
@@ -55,6 +56,8 @@ function createCell(parent, x, y, isCellBlack) {
     cell.setAttribute('data-y', y);
 
     cell.onclick = (event) => {
+        // If knight is already moving, cancel
+        if (isMoving) return;
         let x = event.target.getAttribute('data-x');
         let y = event.target.getAttribute('data-y');
 
@@ -110,11 +113,15 @@ function resetSelectedPositions() {
 }
 
 async function displayMoveSequence(moveSequence) {
+    // If already moving, cancel
+    if (isMoving) return;
+    isMoving = true;
     knightElement.classList.remove('invisible');
     for (let i = 0; i < moveSequence.length; i++) {
         let currentPosition = moveSequence[i].data;
 
         if (i === 0) {
+            // Remove css transition so knight immediately warps to start position
             knightElement.style.transition = 'none';
             knightElement.style.left = calculateKnightPositionCss(
                 currentPosition.x
@@ -134,6 +141,7 @@ async function displayMoveSequence(moveSequence) {
         cellText.innerText = i == 0 ? 'S' : i;
         cell.appendChild(cellText);
     }
+    isMoving = false;
 }
 
 function calculateKnightPositionCss(cellPos) {
@@ -143,16 +151,18 @@ function calculateKnightPositionCss(cellPos) {
 }
 
 async function moveKnight(position) {
+    const speedMs = 800;
     await transitionProperty(
         knightElement,
         'left',
-        '800ms',
+        `${speedMs}ms`,
         calculateKnightPositionCss(position.x)
     );
+
     await transitionProperty(
         knightElement,
         'top',
-        '800ms',
+        `${speedMs}ms`,
         calculateKnightPositionCss(position.y)
     );
 }
