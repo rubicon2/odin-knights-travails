@@ -50,16 +50,17 @@ function createCell(parent, x, y, isCellBlack) {
                 cell.remove();
             });
             // Reset board selected cells colour
-            document
-                .querySelectorAll('.selected-cell')
-                .forEach((element) =>
-                    element.classList.remove('start-cell', 'end-cell')
-                );
+            resetSelectedCells();
             startPos = new Vector2(x, y);
             let startCell = getCellElement(x, y);
             startCell.classList.add('selected-cell', 'start-cell');
         } else {
             endPos = new Vector2(x, y);
+            if (Vector2.isEqual(startPos, endPos)) {
+                resetSelectedCells();
+                resetSelectedPositions();
+                return;
+            }
             let endCell = getCellElement(x, y);
             endCell.classList.add('selected-cell', 'end-cell');
             let moveSequence = Knight.moveMap.findPath(
@@ -72,12 +73,24 @@ function createCell(parent, x, y, isCellBlack) {
                     ).magnitude()
             );
             displayMoveSequence(moveSequence);
-            startPos = null;
-            endPos = null;
+            resetSelectedPositions();
         }
     };
 
     parent.appendChild(cell);
+}
+
+function resetSelectedCells() {
+    document
+    .querySelectorAll('.selected-cell')
+    .forEach((element) =>
+        element.classList.remove('start-cell', 'end-cell')
+    );
+}
+
+function resetSelectedPositions() {
+    startPos = null;
+    endPos = null;
 }
 
 function displayMoveSequence(moveSequence) {
