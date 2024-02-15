@@ -8,6 +8,10 @@ export default class Vector2 {
 
     static one = new Vector2(1, 1);
 
+    static isEqual(a, b) {
+        return (a.x === b.x) && (a.y === b.y);
+    }
+
     static add(a, b) {
         return new Vector2(a.x + b.x, a.y + b.y);
     }
