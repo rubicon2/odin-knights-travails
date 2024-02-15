@@ -151,18 +151,18 @@ function calculateKnightPositionCss(cellPos) {
 }
 
 async function moveKnight(position) {
-    const speedMs = 800;
+    const durationMs = 600;
     await transitionProperty(
         knightElement,
         'left',
-        `${speedMs}ms`,
+        `${durationMs}ms`,
         calculateKnightPositionCss(position.x)
     );
 
     await transitionProperty(
         knightElement,
         'top',
-        `${speedMs}ms`,
+        `${durationMs}ms`,
         calculateKnightPositionCss(position.y)
     );
 }
