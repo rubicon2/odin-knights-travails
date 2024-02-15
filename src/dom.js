@@ -132,7 +132,7 @@ async function displayMoveSequence(moveSequence) {
         } else {
             await moveKnight(currentPosition);
         }
-        await delay(100);
+        await delay(300);
 
         // Now update the board squares with each move number
         let cell = getCellElement(currentPosition.x, currentPosition.y);
