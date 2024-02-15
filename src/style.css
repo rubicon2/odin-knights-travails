@@ -13,6 +13,11 @@
     padding: 0;
 }
 
+/* || Utility */
+.invisible {
+    opacity: 0;
+}
+
 /* || Basic element styles */
 body {
     min-height: 100vh;
@@ -38,6 +43,7 @@ ul, ol {
 
     border: 10px solid var(--brown);
 
+    position: relative;
 }
 
 .board-cell {
@@ -61,4 +67,11 @@ ul, ol {
 .end-cell {
     color: white;
     background-color: rgb(48, 175, 48);
+}
+
+/* Chess Pieces */
+.knight {
+    position: absolute;
+    /* 100% divided by 8 squares */
+    width: 12.5%;
 }

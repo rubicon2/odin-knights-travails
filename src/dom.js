@@ -2,8 +2,16 @@ import { default as Board } from './board';
 import Knight from './knight';
 import Vector2 from './vector2';
 
+// Source: https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces
+// Created by Colin M.L. Burnett https://en.wikipedia.org/wiki/User:Cburnett
+// Under the GNU Free Documentation License.
+// Many thanks!
+import knightIcon from './knight_icon.svg';
+
 let startPos = null;
 let endPos = null;
+
+let knightElement = null;
 
 export function createPage(parent) {
     createChessBoard(parent);
@@ -21,6 +29,12 @@ export function createChessBoard(parent) {
         }
         isCellBlack = !isCellBlack;
     }
+
+    knightElement = document.createElement('img');
+    knightElement.src = knightIcon;
+    knightElement.classList.add('knight');
+    chessBoard.appendChild(knightElement);
+
     parent.appendChild(chessBoard);
 }
 
@@ -81,6 +95,7 @@ function createCell(parent, x, y, isCellBlack) {
 }
 
 function resetSelectedCells() {
+    knightElement.classList.add('invisible');
     document
     .querySelectorAll('.selected-cell')
     .forEach((element) =>
@@ -94,8 +109,10 @@ function resetSelectedPositions() {
 }
 
 function displayMoveSequence(moveSequence) {
+    knightElement.classList.remove('invisible');
     for (let i = 0; i < moveSequence.length; i++) {
         let currentPosition = moveSequence[i].data;
+        moveKnight(currentPosition);
         let cell = getCellElement(currentPosition.x, currentPosition.y);
 
         let cellText = document.createElement('h1');
@@ -103,4 +120,12 @@ function displayMoveSequence(moveSequence) {
         cellText.innerText = i == 0 ? 'S' : i;
         cell.appendChild(cellText);
     }
+}
+
+function moveKnight(position) {
+    // 100% divided by 8 squares
+    const squareSize = 12.5;
+    const knightPos = new Vector2(position.x * squareSize, position.y * squareSize);
+    knightElement.style.left = `${knightPos.x}%`;
+    knightElement.style.top = `${knightPos.y}%`;
 }
