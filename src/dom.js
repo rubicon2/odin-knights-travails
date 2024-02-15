@@ -16,153 +16,144 @@ let knightElement = null;
 let isMoving = false;
 
 export function createPage(parent) {
-    createChessBoard(parent);
+  createChessBoard(parent);
 }
 
 export function createChessBoard(parent) {
-    let chessBoard = document.createElement('div');
-    chessBoard.classList.add('chessboard');
+  let chessBoard = document.createElement('div');
+  chessBoard.classList.add('chessboard');
 
-    let isCellBlack = true;
-    for (let y = Board.MIN_POSITION; y <= Board.MAX_POSITION; y++) {
-        for (let x = Board.MIN_POSITION; x <= Board.MAX_POSITION; x++) {
-            createCell(chessBoard, x, y, isCellBlack);
-            isCellBlack = !isCellBlack;
-        }
-        isCellBlack = !isCellBlack;
+  let isCellBlack = true;
+  for (let y = Board.MIN_POSITION; y <= Board.MAX_POSITION; y++) {
+    for (let x = Board.MIN_POSITION; x <= Board.MAX_POSITION; x++) {
+      createCell(chessBoard, x, y, isCellBlack);
+      isCellBlack = !isCellBlack;
     }
+    isCellBlack = !isCellBlack;
+  }
 
-    knightElement = document.createElement('img');
-    knightElement.src = knightIcon;
-    knightElement.classList.add('knight', 'invisible');
-    chessBoard.appendChild(knightElement);
+  knightElement = document.createElement('img');
+  knightElement.src = knightIcon;
+  knightElement.classList.add('knight', 'invisible');
+  chessBoard.appendChild(knightElement);
 
-    parent.appendChild(chessBoard);
+  parent.appendChild(chessBoard);
 }
 
 function getCellElement(x, y) {
-    return document.querySelector(`.board-cell[data-x="${x}"][data-y="${y}"]`);
+  return document.querySelector(`.board-cell[data-x="${x}"][data-y="${y}"]`);
 }
 
 function createCell(parent, x, y, isCellBlack) {
-    let cell = document.createElement('div');
-    cell.classList.add('board-cell');
+  let cell = document.createElement('div');
+  cell.classList.add('board-cell');
 
-    if (isCellBlack) cell.classList.add('black-cell');
-    else cell.classList.add('white-cell');
-    isCellBlack = !isCellBlack;
+  if (isCellBlack) cell.classList.add('black-cell');
+  else cell.classList.add('white-cell');
+  isCellBlack = !isCellBlack;
 
-    cell.setAttribute('data-x', x);
-    cell.setAttribute('data-y', y);
+  cell.setAttribute('data-x', x);
+  cell.setAttribute('data-y', y);
 
-    cell.onclick = (event) => {
-        // If knight is already moving, cancel
-        if (isMoving) return;
-        let x = event.target.getAttribute('data-x');
-        let y = event.target.getAttribute('data-y');
+  cell.onclick = (event) => {
+    // If knight is already moving, cancel
+    if (isMoving) return;
+    let x = event.target.getAttribute('data-x');
+    let y = event.target.getAttribute('data-y');
 
-        // 1st click gets startPos, 2nd click gets endPos
-        if (!startPos) {
-            // Remove any leftover text from last path shown
-            document.querySelectorAll('.cell-text').forEach((cell) => {
-                cell.remove();
-            });
-            // Reset board selected cells colour
-            resetSelectedCells();
-            startPos = new Vector2(x, y);
-            let startCell = getCellElement(x, y);
-            startCell.classList.add('selected-cell', 'start-cell');
-        } else {
-            endPos = new Vector2(x, y);
-            if (Vector2.isEqual(startPos, endPos)) {
-                resetSelectedCells();
-                resetSelectedPositions();
-                return;
-            }
-            let endCell = getCellElement(x, y);
-            endCell.classList.add('selected-cell', 'end-cell');
-            let moveSequence = Knight.moveMap.findPath(
-                startPos,
-                endPos,
-                (a, b) =>
-                    Vector2.sub(
-                        new Vector2(b.data.x, b.data.y),
-                        new Vector2(a.data.x, a.data.y)
-                    ).magnitude()
-            );
-            displayMoveSequence(moveSequence);
-            resetSelectedPositions();
-        }
-    };
+    // 1st click gets startPos, 2nd click gets endPos
+    if (!startPos) {
+      // Remove any leftover text from last path shown
+      document.querySelectorAll('.cell-text').forEach((cell) => {
+        cell.remove();
+      });
+      // Reset board selected cells colour
+      resetSelectedCells();
+      startPos = new Vector2(x, y);
+      let startCell = getCellElement(x, y);
+      startCell.classList.add('selected-cell', 'start-cell');
+    } else {
+      endPos = new Vector2(x, y);
+      if (Vector2.isEqual(startPos, endPos)) {
+        resetSelectedCells();
+        resetSelectedPositions();
+        return;
+      }
+      let endCell = getCellElement(x, y);
+      endCell.classList.add('selected-cell', 'end-cell');
+      let moveSequence = Knight.moveMap.findPath(startPos, endPos, (a, b) =>
+        Vector2.sub(
+          new Vector2(b.data.x, b.data.y),
+          new Vector2(a.data.x, a.data.y)
+        ).magnitude()
+      );
+      displayMoveSequence(moveSequence);
+      resetSelectedPositions();
+    }
+  };
 
-    parent.appendChild(cell);
+  parent.appendChild(cell);
 }
 
 function resetSelectedCells() {
-    knightElement.classList.add('invisible');
-    document
-        .querySelectorAll('.selected-cell')
-        .forEach((element) =>
-            element.classList.remove('start-cell', 'end-cell')
-        );
+  knightElement.classList.add('invisible');
+  document
+    .querySelectorAll('.selected-cell')
+    .forEach((element) => element.classList.remove('start-cell', 'end-cell'));
 }
 
 function resetSelectedPositions() {
-    startPos = null;
-    endPos = null;
+  startPos = null;
+  endPos = null;
 }
 
 async function displayMoveSequence(moveSequence) {
-    // If already moving, cancel
-    if (isMoving) return;
-    isMoving = true;
-    knightElement.classList.remove('invisible');
-    for (let i = 0; i < moveSequence.length; i++) {
-        let currentPosition = moveSequence[i].data;
+  // If already moving, cancel
+  if (isMoving) return;
+  isMoving = true;
+  knightElement.classList.remove('invisible');
+  for (let i = 0; i < moveSequence.length; i++) {
+    let currentPosition = moveSequence[i].data;
 
-        if (i === 0) {
-            // Remove css transition so knight immediately warps to start position
-            knightElement.style.transition = 'none';
-            knightElement.style.left = calculateKnightPositionCss(
-                currentPosition.x
-            );
-            knightElement.style.top = calculateKnightPositionCss(
-                currentPosition.y
-            );
-        } else {
-            await moveKnight(currentPosition);
-        }
-        await delay(300);
-
-        // Now update the board squares with each move number
-        let cell = getCellElement(currentPosition.x, currentPosition.y);
-        let cellText = document.createElement('h1');
-        cellText.classList.add('cell-text');
-        cellText.innerText = i == 0 ? 'S' : i;
-        cell.appendChild(cellText);
+    if (i === 0) {
+      // Remove css transition so knight immediately warps to start position
+      knightElement.style.transition = 'none';
+      knightElement.style.left = calculateKnightPositionCss(currentPosition.x);
+      knightElement.style.top = calculateKnightPositionCss(currentPosition.y);
+    } else {
+      await moveKnight(currentPosition);
     }
-    isMoving = false;
+    await delay(300);
+
+    // Now update the board squares with each move number
+    let cell = getCellElement(currentPosition.x, currentPosition.y);
+    let cellText = document.createElement('h1');
+    cellText.classList.add('cell-text');
+    cellText.innerText = i == 0 ? 'S' : i;
+    cell.appendChild(cellText);
+  }
+  isMoving = false;
 }
 
 function calculateKnightPositionCss(cellPos) {
-    // 100% divided by 8 squares
-    const squareSize = 12.5;
-    return `${cellPos * squareSize}%`;
+  // 100% divided by 8 squares
+  const squareSize = 12.5;
+  return `${cellPos * squareSize}%`;
 }
 
 async function moveKnight(position) {
-    const durationMs = 600;
-    await transitionProperty(
-        knightElement,
-        'left',
-        `${durationMs}ms`,
-        calculateKnightPositionCss(position.x)
-    );
+  const durationMs = 600;
+  await transitionProperty(
+    knightElement,
+    'left',
+    `${durationMs}ms`,
+    calculateKnightPositionCss(position.x)
+  );
 
-    await transitionProperty(
-        knightElement,
-        'top',
-        `${durationMs}ms`,
-        calculateKnightPositionCss(position.y)
-    );
+  await transitionProperty(
+    knightElement,
+    'top',
+    `${durationMs}ms`,
+    calculateKnightPositionCss(position.y)
+  );
 }
