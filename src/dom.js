@@ -1,7 +1,7 @@
 import Board from './board';
 import Knight from './knight';
 import Vector2 from './vector2';
-import { delay } from './animations'; 
+import { delay, transitionProperty } from './animations';
 
 // Source: https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces
 // Created by Colin M.L. Burnett https://en.wikipedia.org/wiki/User:Cburnett
@@ -98,10 +98,10 @@ function createCell(parent, x, y, isCellBlack) {
 function resetSelectedCells() {
     knightElement.classList.add('invisible');
     document
-    .querySelectorAll('.selected-cell')
-    .forEach((element) =>
-        element.classList.remove('start-cell', 'end-cell')
-    );
+        .querySelectorAll('.selected-cell')
+        .forEach((element) =>
+            element.classList.remove('start-cell', 'end-cell')
+        );
 }
 
 function resetSelectedPositions() {
@@ -114,8 +114,18 @@ async function displayMoveSequence(moveSequence) {
     for (let i = 0; i < moveSequence.length; i++) {
         let currentPosition = moveSequence[i].data;
 
-        moveKnight(currentPosition);
-        await delay(1000);
+        if (i === 0) {
+            knightElement.style.transition = 'none';
+            knightElement.style.left = calculateKnightPositionCss(
+                currentPosition.x
+            );
+            knightElement.style.top = calculateKnightPositionCss(
+                currentPosition.y
+            );
+        } else {
+            await moveKnight(currentPosition);
+        }
+        await delay(100);
 
         // Now update the board squares with each move number
         let cell = getCellElement(currentPosition.x, currentPosition.y);
@@ -126,10 +136,23 @@ async function displayMoveSequence(moveSequence) {
     }
 }
 
-function moveKnight(position) {
+function calculateKnightPositionCss(cellPos) {
     // 100% divided by 8 squares
     const squareSize = 12.5;
-    const knightPos = new Vector2(position.x * squareSize, position.y * squareSize);
-    knightElement.style.left = `${knightPos.x}%`;
-    knightElement.style.top = `${knightPos.y}%`;
+    return `${cellPos * squareSize}%`;
+}
+
+async function moveKnight(position) {
+    await transitionProperty(
+        knightElement,
+        'left',
+        '800ms',
+        calculateKnightPositionCss(position.x)
+    );
+    await transitionProperty(
+        knightElement,
+        'top',
+        '800ms',
+        calculateKnightPositionCss(position.y)
+    );
 }
