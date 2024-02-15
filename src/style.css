@@ -74,4 +74,5 @@ ul, ol {
     position: absolute;
     /* 100% divided by 8 squares */
     width: 12.5%;
+    transition: opacity 200ms;
 }

@@ -1,6 +1,7 @@
-import { default as Board } from './board';
+import Board from './board';
 import Knight from './knight';
 import Vector2 from './vector2';
+import { delay } from './animations'; 
 
 // Source: https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces
 // Created by Colin M.L. Burnett https://en.wikipedia.org/wiki/User:Cburnett
@@ -32,7 +33,7 @@ export function createChessBoard(parent) {
 
     knightElement = document.createElement('img');
     knightElement.src = knightIcon;
-    knightElement.classList.add('knight');
+    knightElement.classList.add('knight', 'invisible');
     chessBoard.appendChild(knightElement);
 
     parent.appendChild(chessBoard);
@@ -108,13 +109,16 @@ function resetSelectedPositions() {
     endPos = null;
 }
 
-function displayMoveSequence(moveSequence) {
+async function displayMoveSequence(moveSequence) {
     knightElement.classList.remove('invisible');
     for (let i = 0; i < moveSequence.length; i++) {
         let currentPosition = moveSequence[i].data;
-        moveKnight(currentPosition);
-        let cell = getCellElement(currentPosition.x, currentPosition.y);
 
+        moveKnight(currentPosition);
+        await delay(1000);
+
+        // Now update the board squares with each move number
+        let cell = getCellElement(currentPosition.x, currentPosition.y);
         let cellText = document.createElement('h1');
         cellText.classList.add('cell-text');
         cellText.innerText = i == 0 ? 'S' : i;
